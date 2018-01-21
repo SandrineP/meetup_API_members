@@ -16,10 +16,10 @@ client.api_key = config.MEETUP_KEY
 
 # weights
 weight_A = 1
-weight_N = 0.8
-weight_L = 0.2
-weight_E = 0.1
-weight_W = 0.4
+weight_N = -1
+weight_L = -0.3
+weight_E = -0.2
+weight_W = 0.5
 
 # capacity of the event
 capacity = int(input("Capacity of the event: "))
