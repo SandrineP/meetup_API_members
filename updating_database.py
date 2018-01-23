@@ -3,7 +3,7 @@ import config
 import pandas as pd
 
 # Importing the members database
-members = pd.read_csv('AI_club_attendance.csv')
+members = pd.read_csv('AI_club_attendance_test.csv', index_col='member ID')
 
 client = meetup.api.Client()
 client.api_key = config.MEETUP_KEY
