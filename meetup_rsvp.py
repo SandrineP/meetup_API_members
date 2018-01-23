@@ -21,18 +21,17 @@ weight_L = -0.3
 weight_E = -0.2
 weight_W = 0.5
 
-# capacity of the event
-capacity = int(input("Capacity of the event: "))
 
 def move_to_main_list(ev_id, m_id):
     client.CreateRsvp(event_id = ev_id, member_id = m_id, rsvp = 'yes')
 
 def to_main_list(event):
+    capacity = int(event['description'][-7:-4])    # capacity of the event
 
     if event['waitlist_count'] != 0:
-        nb_ml = event['yes_rsvp_count']  # number of people already on the main list
+        nb_ml = event['yes_rsvp_count']    # number of people already on the main list
 
-        rsvps = client.GetRsvps(event_id = event['id'])     # getting the rsvp
+        rsvps = client.GetRsvps(event_id = event['id'])    # getting the rsvp
         w = [rsvps.results[i]['response'] == 'waitlist' for i in range(len(rsvps.results))]
         waitlist = [m for (m,r) in zip(rsvps.results, w) if r]
                    # to do: ordering by date of answer
@@ -44,9 +43,9 @@ def to_main_list(event):
 
                 if m_id not in members.index:
                     print(m_id, m['member']['name'])
-                    move_to_main_list(event['id'], m_id)     # moving the member to the mainlist
+                    move_to_main_list(event['id'], m_id)    # moving the member to the mainlist
 
-                    members.loc[m_id] = m['member']['name']      #adding the new member to database
+                    members.loc[m_id] = m['member']['name']    #adding the new member to database
                     members.loc[m_id, 1:6] = 0
                     members.loc[m_id, 6:] = 'NaN'
 
@@ -56,7 +55,7 @@ def to_main_list(event):
                     score = sum(s)
 
                     if score >= 0:
-                        move_to_main_list(event['id'], m_id)     # moving the member to the mainlist
+                        move_to_main_list(event['id'], m_id)    # moving the member to the mainlist
 
     # to do: complete the mainlist 24h before the event, whatever the score is
 
