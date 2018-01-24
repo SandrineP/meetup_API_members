@@ -29,14 +29,14 @@ def to_main_list(event):
     capacity = int(event['description'][-7:-4])    # capacity of the event
 
     if event['waitlist_count'] != 0:
-        nb_ml = event['yes_rsvp_count']    # number of people already on the main list
+        nb_ml = event['yes_rsvp_count']    # number of people on the main list
 
         rsvps = client.GetRsvps(event_id = event['id'])    # getting the rsvp
         w = [rsvps.results[i]['response'] == 'waitlist' for i in range(len(rsvps.results))]
         waitlist = [m for (m,r) in zip(rsvps.results, w) if r]
                    # to do: ordering by date of answer
 
-        if nb_ml < capacity:
+        while nb_ml < capacity:
             for m in waitlist:
                 m_id = m['member']['member_id']
                     # to do: checking if question is answered
@@ -44,6 +44,7 @@ def to_main_list(event):
                 if m_id not in members.index:
                     print(m_id, m['member']['name'])
                     move_to_main_list(event['id'], m_id)    # moving the member to the mainlist
+                    nb_ml += 1    # updating the number of people on the main list
 
                     members.loc[m_id] = m['member']['name']    #adding the new member to database
                     members.loc[m_id, 1:6] = 0
@@ -56,6 +57,7 @@ def to_main_list(event):
 
                     if score >= 0:
                         move_to_main_list(event['id'], m_id)    # moving the member to the mainlist
+                        nb_ml += 1    # updating the number of people on the main list
 
     # to do: complete the mainlist 24h before the event, whatever the score is
 
