@@ -34,7 +34,7 @@ def to_main_list(event):
         rsvps = client.GetRsvps(event_id = event['id'])    # getting the rsvp
         w = [rsvps.results[i]['response'] == 'waitlist' for i in range(len(rsvps.results))]
         waitlist = [m for (m,r) in zip(rsvps.results, w) if r]
-                   # to do: ordering by date of answer
+        waitlist_ordered = sorted(waitlist, key=lambda item: item['mtime'])    # ordering the waitlist by time answered
 
         while nb_ml < capacity:
             for m in waitlist:
