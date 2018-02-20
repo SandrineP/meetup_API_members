@@ -6,6 +6,8 @@ from datetime import datetime
 # Importing the members database
 members = pd.read_csv('AI_club_attendance.csv', index_col='member ID')
 
+allies = [132631792, 217820829]
+
 client = meetup.api.Client()
 client.api_key = config.MEETUP_KEY
 
@@ -38,7 +40,7 @@ def decide_to_move(ev_id, m, n):
         members.loc[m_id, 1:6] = 0    # filling A, N, L, E and W (cf bellow) with zeros
         members.loc[m_id, 6:] = 'NaN'    # filling the rest of the row with NaN
 
-    else:
+    elif m_id not in allies:
         weight = [weight_A, weight_N, weight_L, weight_E, weight_W]
         s = [w*p for w,p in zip(weight,members.loc[m_id][1:6])]
         score = sum(s)
