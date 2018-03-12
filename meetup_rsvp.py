@@ -49,6 +49,8 @@ def decide_to_move(ev_id, m, n):
             move_to_main_list(ev_id, m_id)    # moving the member to the mainlist
             n += 1    # updating the number of people on the main list
 
+    return n
+
 
 def to_main_list(event):
     capacity = int(event['description'][-7:-4])    # capacity of the event
@@ -66,10 +68,10 @@ def to_main_list(event):
 
                 if 'answers' in m.keys():
                     if len(m['answers'][0])>4:
-                        decide_to_move(event['id'], m, nb_ml)
+                        nb_ml = decide_to_move(event['id'], m, nb_ml)
 
                 else:
-                    decide_to_move(event['id'], m, nb_ml)
+                    nb_ml = decide_to_move(event['id'], m, nb_ml)
 
     ### to do: complete the mainlist 24h before the event, whatever the score is
 
